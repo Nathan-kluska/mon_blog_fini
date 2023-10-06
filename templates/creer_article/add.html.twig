@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CreerArticleController!{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-6 mx-auto text-center">
+                <h1> Ajouter un article</h1>
+                {{form_start(articleForm)}}
+                {{form_row(articleForm.titreArticle)}}
+                {{form_row(articleForm.idSousCategorie)}}
+                {{form_row(articleForm.contenuArticle)}}
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {{form_end(articleForm)}}
+                
+            </div>
+        </section>
+         <script>
+        // Écoutez la soumission du formulaire
+document.querySelector('form').addEventListener('submit', function () {
+// Empêche la soumission normale du formulaire
+
+// Effectuez ici la validation du formulaire si nécessaire
+
+// En cas de succès, affichez SweetAlert
+Swal.fire('Votre article a été créé avec succès').then(function () {
+// Redirigez vers le tableau de bord ou une autre page si nécessaire
+window.location.href = "{{ path('app_dashboard') }}";
+});
+});
+    </script>
+    </main>
+{% endblock %}

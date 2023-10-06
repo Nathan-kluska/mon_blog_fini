@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello HomeController!{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+{% endblock %}
+{% block body %}
+<section class="py-5 text-center container">
+<h1>{{mon_titre}}</h1>
+
+<ul>
+    {% for article in articlesUser %}
+        
+        <a href="http://127.0.0.1:8000/article/{{ article.idArticle|e }}">{{ article.titreArticle|e }}</a>
+        <br>
+        <li>{{article.contenuArticle|raw}}</li>
+        <li>{{article.dateCreation|date("m/d/Y")}}</li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
