@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 mx-auto">
+				<h1 class="mb-5">Inscription</h1>
+
+				{{ form_errors(registrationForm) }}
+
+				{{ form_start(registrationForm) }}
+                <fieldset class="mb-5">
+                    <h2>Mes informations de connexion</h2>
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword)}}
+                </fieldset>
+                <fieldset class="mb-3">
+                    <h2>Mes coordonnées</h2>
+                    {{ form_row(registrationForm.nom) }}
+                    {{ form_row(registrationForm.prenom) }}
+                    {{ form_row(registrationForm.adresse) }}
+                    {{ form_row(registrationForm.cp) }}
+                    {{ form_row(registrationForm.nomVille) }}
+                </fieldset>
+
+				
+				{# {{ form_row(registrationForm.agreeTerms) }} #}
+
+				<button type="submit" class="btn btn-primary">Inscription</button>
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $("#registration_form_adresse").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "https://api-adresse.data.gouv.fr/search/?q=8",
+                    data: {
+                        q: request.term
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        var addresses = [];
+                        response($.map(data.features, function (item) {
+                            return {
+                                label: item.properties.name + ", " + item.properties.postcode + " - " + item.properties.city,
+                                address: item.properties.name,
+                                postcode: item.properties.postcode,
+                                city: item.properties.city,
+                                value: item.properties.name,
+                                citycode: item.properties.citycode
+                            };
+                        }));
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#registration_form_adresse').val(ui.item.address);
+                $('#registration_form_cp').val(ui.item.postcode);
+                $('#registration_form_nomVille').val(ui.item.city);
+                $('#registration_form_citycode').val(ui.item.citycode);
+            }
+        });
+    </script>
+{% endblock  %}

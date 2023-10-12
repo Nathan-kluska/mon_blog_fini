@@ -8,11 +8,11 @@
             <div class="col-6 mx-auto text-center mt-2">
                 <h1 class="my-5 text-center"> Ajouter un article</h1>
                 {{form_start(articleForm)}}
+                <h2>Titre article</h2>
                 {{form_row(articleForm.titreArticle)}}
                 {{form_row(articleForm.idCategorie)}}
-                { {{form_row(articleForm.idSousCategorie)}} }
+                {{form_row(articleForm.idSousCategorie)}}
                 {{form_row(articleForm.contenuArticle)}}
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
                 {{form_end(articleForm)}}
                 
             </div>
@@ -32,4 +32,23 @@ window.location.href = "{{ path('app_dashboard') }}";
 });
     </script>
     </main>
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+var $categorie = $('#article_form_idCategorie');
+$categorie.change(function() {
+var $form = $(this).closest('form');
+var data = {};
+data[$categorie.attr('name')] = $categorie.val();
+$.ajax({
+url : $form.attr('action'),
+type: $form.attr('method'),
+data : data,
+complete: function(html) {
+$('#article_form_idSousCategorie').replaceWith($(html.responseText).find('#article_form_idSousCategorie'));
+}});
+});
+</script>
 {% endblock %}

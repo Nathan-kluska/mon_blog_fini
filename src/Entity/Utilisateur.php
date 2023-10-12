@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 /**
  * Utilisateur
@@ -14,6 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ORM\Table(name="utilisateur", indexes={@ORM\Index(name="utilisateur_ville_FK", columns={"id_ville"}), @ORM\Index(name="utilisateur_role_utilisateur0_FK", columns={"id_role_utilisateur"})})
  * @ORM\Entity(repositoryClass= "App\Repository\UtilisateurRepository")
  */
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface
 {
     /**
@@ -86,7 +90,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
      *
      * @ORM\Column(name="code_roles", type="string", length=50, nullable=false)
      */
-    private $codeRoles;
+    private $codeRoles = 'ROLE_USER';
 
     /**
      * @var \Ville
@@ -107,6 +111,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
      * })
      */
     private $idRoleUtilisateur;
+
+   
 
     public function getIdUtilisateur(): ?int
     {
@@ -190,11 +196,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         return $this->dateInscription;
     }
 
-    public function setDateInscription(\DateTimeInterface $dateInscription): static
+    public function setDateInscription(\DateTimeInterface $dateInscription): self
     {
         $this->dateInscription = $dateInscription;
 
         return $this;
+    }
+    public function __construct(){
+        $this->dateInscription = new \DateTime();
     }
 
     public function getTracker(): ?string

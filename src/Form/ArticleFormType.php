@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Ville;
 use App\Entity\Region;
+use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Departement;
 use App\Entity\SousCategorie;
@@ -19,8 +20,10 @@ use App\Repository\SousCategorieRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class ArticleFormType extends AbstractType
@@ -36,45 +39,18 @@ class ArticleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre', TextType::class,[
+        ->add('nomImage', FileType::class,['attr' => ['class' => 'form-control'], 'mapped'=> false, 'multiple' => true])
+            ->add('titreArticle', TextType::class,[
             'label' => false,
             'required' => false,
-            'attr' => ['class' => 'form-control mt-5']
+            'attr' => ['class' => 'form-control']
             ])
-            ->add('contenu', TextType::class,[
+            ->add('contenuArticle', TextareaType::class,[
                 'label' => false,
                 'required' => false,
                 'attr' => ['class' => 'form-control mt-2']
             ])
-            ->add('prix', TextType::class,[
-                'label' => false,
-                'required' => false,
-                'attr' => ['class' => 'form-control mt-2']
-                ])
-            ->add('adresse', TextType::class,[
-                'label' => false,
-                'required' => false,
-                'attr' => ['class' => 'form-control mt-2']
-                ])
             
-            ->add('idRegion', EntityType::class, [
-                'class' => Region::class,
-                'mapped' => false,
-                'choice_label' => "nomRegion",
-                'placeholder' => 'Choisissez la région',                
-                'label' => false,
-                'attr'=> ['class'=> 'form-select text-center mt-5']
-                ])
-
-                ->add('idVille', EntityType::class, [
-                'class' => Ville::class,
-                'mapped' => false,
-                'data' => null,
-                'choice_label' => "nomVille",
-                'placeholder' => 'Choisissez la ville',                
-                'label' => false,
-                'attr'=> ['class'=> 'form-select text-center mt-2']
-                ])
 
             ->add('save', SubmitType::class,[
             'attr'=> ['class'=> 'btn btn-success mt-5'],
@@ -102,6 +78,7 @@ class ArticleFormType extends AbstractType
                 'attr'=> ['class'=> 'form-select text-center mt-2'
                 ]]);
             };
+            
       
             //->add('dateAnnonce')
             //->add('latitude')
