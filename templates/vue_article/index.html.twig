@@ -1,23 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello VueArticleController!{% endblock %}
+{% block title %}Hello VueArticleController!
+{% endblock %}
 
 {% block body %}
 
 
-<div class="container">
-    <div class="row">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center d-flex flex-column">
+				<h4>Titre :
+					{{article.titreArticle}}</h4>
+				<p>Sous catégorie :
+					{{article.idSousCategorie.nomSousCategorie}}</p>
+				<p>Contenu article :
+					{{article.contenuArticle|raw}}</p>
+                <p>Image de l'article : </p>
 
-       
-                <h4>Titre :</h4>
-                <p>{{ article.titreArticle }}</p>
-          
-                <h4>Auteur :</h4>
-                <p>{{ article.contenuArticle }}</p>
-            
+			</div>
 
 
-         
-    </div>
-</div>
+		</div>
+	</div>
 {% endblock %}
